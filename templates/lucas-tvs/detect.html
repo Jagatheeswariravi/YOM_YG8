@@ -1,0 +1,51 @@
+                        <div class="sop-compliance">
+                            <p class="para-5">SOP Compliance</p>
+                        </div>
+                        <div class="p-1">
+
+                            <div class="object-container-wrapper">
+                            {% for class_id, class_name in class_name_dict.items() %}
+                              <button class="btn{% if class_name in detected_objects %}-1{% else %}{% endif %} btn-primary mt-3">
+                                <img src="/static/asset/{% if class_name in detected_objects %}check_circle.svg {% else %}cancel.svg {% endif %}" 
+
+                                class="cancel pe-3 ps-2" />
+
+                            {{ class_name }}
+                        </button>
+                            {% endfor %}
+                            </div>
+
+
+                         <!--    <button class="btn-1 btn-primary mt-3"><img src="/static/asset/check_circle.svg" class="cancel pe-3 ps-2" />Gromet Placement RHS</button>
+                            <button class="btn-1 btn-primary mt-3"><img src="/static/asset/<check_circle.svg" class="cancel pe-3 ps-2" />Spindle Screw - Driver</button>
+                            <button class="btn-1 btn-primary mt-3"><img src="/static/asset/check_circle.svg" class="cancel pe-3 ps-2" />Spindle Screw - Passenger</button>  -->
+                          <!--   <button class="btn-2 btn-primary mt-3 ps-3">Go Gauge RHS</button>
+                            <button class="btn-2 btn-primary mt-2 ps-3">No Gauge RHS</button>
+                            <button class="btn-2 btn-primary mt-2 ps-3">Go Gauge LHS</button>
+                            <button class="btn-2 btn-primary mt-2 ps-3">No Gauge RHS</button> -->
+
+                            {% if detected_objects|length > length_key %}
+                            <div class="pass">
+                                <p>Result</p>
+                                <h3>PASS</h3>
+                            </div>
+
+                             {% else %}
+                            <div class="fail">
+                                <p>Result</p>
+                                <h3>Fail</h3>
+                            </div>
+                            {% endif %}
+
+  <input type="text" id="check_pass_fail" name="check_pass_fail" value="{% if detected_objects|length > length_key %}1{% else %}0{% endif %}"  hidden/>
+
+                            <!-- <div>
+                              {% if detected_objects|length > 4 %}
+                                <p class="pass">Pass</p>
+                              {% else %}
+                                <p class="fail">Fail</p>
+                              {% endif %}
+                            </div> -->
+                             
+                        </div>
+                

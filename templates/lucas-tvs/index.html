@@ -1,0 +1,1235 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lucas TVS</title>
+    <!-- Latest compiled and minified CSS -->
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script type="text/javascript">
+      
+var startTime; // to keep track of the start time
+var stopwatchInterval; // to keep track of the interval
+var elapsedPausedTime = 0; // to keep track of the elapsed time while stopped
+
+  var production_count_x = [];
+  var production_count_y = [];
+  var cycle_analysis_x = [];
+  var cycle_analysis_y = [];
+  var drop_down = {{drop_down|tojson}}
+
+function startStopwatch() {
+  if (!stopwatchInterval) {
+    startTime = new Date().getTime() - elapsedPausedTime; // get the starting time by subtracting the elapsed paused time from the current time
+    stopwatchInterval = setInterval(updateStopwatch, 1000); // update every second
+  }
+}
+
+function stopStopwatch() {
+  clearInterval(stopwatchInterval); // stop the interval
+  elapsedPausedTime = new Date().getTime() - startTime; // calculate elapsed paused time
+  stopwatchInterval = null; // reset the interval variable
+}
+
+function resetStopwatch() {
+  stopStopwatch(); // stop the interval
+  elapsedPausedTime = 0; // reset the elapsed paused time variable
+  document.getElementById("stopwatch").innerHTML = "00:00:00"; // reset the display
+}
+
+function updateStopwatch() {
+  var currentTime = new Date().getTime(); // get current time in milliseconds
+  var elapsedTime = currentTime - startTime; // calculate elapsed time in milliseconds
+  var seconds = Math.floor(elapsedTime / 1000) % 60; // calculate seconds
+  var minutes = Math.floor(elapsedTime / 1000 / 60) % 60; // calculate minutes
+  var hours = Math.floor(elapsedTime / 1000 / 60 / 60); // calculate hours
+  var displayTime = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds); // format display time
+  document.getElementById("stopwatch").innerHTML = displayTime; // update the display
+}
+
+function pad(number) {
+  // add a leading zero if the number is less than 10
+  return (number < 10 ? "0" : "") + number;
+}
+
+    </script>
+
+   
+   <style type="text/css">
+       @import url('https://fonts.googleapis.com/css?family=Roboto+Slab:400,700|Roboto:300,400,400i,500,700');
+
+
+
+body {
+    background: #fff;
+    color: #414141;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    overflow-x: hidden;
+    -webkit-text-stroke: rgba(255, 255, 255, 0.01) 0.1px;
+    -webkit-font-smoothing: antialiased !important;
+}
+
+a {
+    text-decoration: none;
+    -ms-transition: all 0.3s ease-in;
+    -webkit-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+}
+
+a:hover,
+a:focus,
+a:active {
+    outline: medium none;
+    text-decoration: none;
+}
+
+*:focus {
+    outline: none;
+}
+
+img {
+    max-width: 100%; 
+    height: auto;
+}
+
+strong,
+b {
+    font-weight: 700;
+}
+
+i,
+em {
+    font-style: italic;
+}
+
+.clear {
+    border: 0;
+    clear: both;
+    height: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    font-weight: normal;
+    margin: 0;
+}
+
+
+
+html,
+body {
+    height: 100%;
+    background-color: #F5F5F5;
+}
+
+/**** NAV ****/
+
+.box-1 {
+    display: flex;
+}
+.inner-box{
+    width: 50%;
+}
+.inner-box p{
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #0057AC;
+
+}
+.inner-box-1{
+    width: 50%;
+    text-align: right;
+}
+
+.bord-box {
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
+    height: 65px;
+    background-color: #ffffff;
+}
+
+.para-4 {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #696969;
+    padding-bottom: 10px;
+
+}
+
+.five-sec .col-2 {
+    width: 20%!important;
+}
+
+.three-sec .first {
+    width: 20%!important;
+    background-color: #ffffff;
+    box-shadow: 4px 4px 24px 0px #0000000D;
+
+}
+
+.three-sec .second {
+    width: 60%!important;
+    padding: 0px 5px 5px 5px;
+}
+
+.sop-compliance {
+    background-color: #0057AC;
+    padding: 10px 10px;
+    border-radius: 10px 10px 0px 0px;
+}
+.sop-compliance .para-5 {
+    font-family: Roboto;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #ffffff;
+
+}
+
+.btn{
+    width:100%;
+    position:relative;
+    height:50px;
+    background-color: #BF3030;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+    border-radius: 15px;
+    border: none;
+    height: 40px;
+
+  }
+
+  .btn-1{
+    width:100%;
+    position:relative;
+    height:50px;
+    background-color: #30BF6C;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+    border-radius: 15px;
+    border: none;
+    color: #fff;
+    height: 40px;
+
+  }
+
+  .btn-2{
+    width:100%;
+    position:relative;
+    height:50px;
+    background-color: #F5F5F5;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+    border-radius: 15px;
+    border: none;
+    color: #696969;
+    height: 40px;
+
+  }
+
+  .fail {
+    padding: 10px 16px 10px 16px;
+    border-radius: 4px;
+    gap: 10px;
+    background-color: red;
+    margin-top: 33px;
+
+  }
+
+  .fail p{
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #000000;
+
+  }
+
+  .fail h3{
+   
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #000;
+  }
+
+
+    .pass {
+    padding: 10px 16px 10px 16px;
+    border-radius: 4px;
+    gap: 10px;
+    background-color: #C9EBD7;
+    margin-top: 33px;
+
+  }
+
+  .pass p{
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #000000;
+
+  }
+
+  .pass h3{
+   
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #00963F;
+  }
+
+  .time {
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #00963F;
+
+  }
+
+  .time-1 {
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 14px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #ffffff;
+
+  }
+
+  .time-sec {
+    background-color: #000000;
+    padding: 30px 10px;
+    border-radius: 10px;
+  }
+
+  .trading {
+    background-color: #F4F4F4;
+    padding: 15px 10px;
+  }
+
+  .trading p{
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #696969;
+
+  }
+
+  .trading h3{
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #000000;
+    padding-top: 8px;
+    
+  }
+
+  .total {
+    width: 90%;
+  }
+  .total-imag {
+    width: 10%;
+    display: contents;
+  }
+
+  button {
+    width: 100%;
+    color: #00963F;
+    border: 1px solid #00963F;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin-top: 20px;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 21px;
+    letter-spacing: 0em;
+
+  }
+
+  .bar-char {
+    text-align: center;
+  }
+
+  .cycle {
+    display: flex;
+    width: 70%;
+    margin: auto;
+    padding: 10px;
+    background-color: #EAEAEA;
+    border-radius: 10px;
+  }
+
+  .cycle h3 {
+    width: 50%;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: center;
+
+  }
+
+  .cycle p {
+    width: 50%;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: center;
+
+  }
+
+  .cycle-1 {
+    display: flex;
+    width: 80%;
+    margin: auto;
+    padding: 10px;
+    background-color: #30BF6C;
+    border-radius: 10px;
+    box-shadow: 6px 6px 34px 0px #0000004D;
+
+  }
+
+  .cycle-1 h3 {
+    width: 50%;
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #ffffff;
+    padding-left: 50px;
+
+  }
+
+  .cycle-1 p {
+    width: 50%;
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #ffffff;
+
+  }
+
+  .bord-1 {
+    box-shadow: 4px 4px 24px 0px #0000000D;
+    background-color: #ffffff;
+
+  }
+
+  #cars {
+    border: none!important;
+  }
+
+  #cars {
+    -webkit-appearance: none;
+    /* Remove the default arrow in Webkit browsers (e.g., Chrome, Safari) */
+    -moz-appearance: none;
+    /* Remove the default arrow in Firefox */
+    appearance: none;
+    /* Remove the default arrow in modern browsers */
+    background-image: none;
+    /* Remove any background image (including the arrow) */
+  }
+
+  .filter-icon {
+    position: absolute;
+    z-index: 96;
+    right: 8%;
+    top: 35%;
+    pointer-events: none;
+  }
+
+  .filter-title {
+    position: absolute;
+    z-index: 96;
+    left: 4%;
+    top: 15%
+  }
+
+  .bord-box {
+    position: relative;
+  }
+
+  .bord-box select {
+    padding-top: 30px;
+    width: 100%;
+    padding-left: 12px;
+    color: #0057AC;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Roboto;
+  }
+
+
+
+
+
+
+
+
+
+
+  @media (max-width: 1441px) {
+    .inner-box p {
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 21px;
+      letter-spacing: 0em;
+      text-align: left;
+      color: #0057AC;
+    }
+    .para-4 {
+      font-family: Roboto;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      letter-spacing: 0em;
+      text-align: left;
+      color: #696969;
+      padding-bottom: 10px;
+    }
+    .sop-compliance .para-5 {
+      font-family: Roboto;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 26px;
+      letter-spacing: 0em;
+      text-align: center;
+      color: #ffffff;
+    }
+    .btn {
+      width: 100%;
+      position: relative;
+      height: 50px;
+      background-color: #BF3030;
+      font-family: Roboto;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 19px;
+      letter-spacing: 0em;
+      text-align: left;
+      border-radius: 15px;
+      border: none;
+      height: 40px;
+    }
+
+    .btn-1 {
+      width: 100%;
+      position: relative;
+      height: 50px;
+      background-color: #30BF6C;
+      font-family: Roboto;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 19px;
+      letter-spacing: 0em;
+      text-align: left;
+      border-radius: 15px;
+      border: none;
+      color: #fff;
+      height: 40px;
+    }
+    .btn-2 {
+      width: 100%;
+      position: relative;
+      height: 50px;
+      background-color: #F5F5F5;
+      font-family: Roboto;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 19px;
+      letter-spacing: 0em;
+      text-align: left;
+      border-radius: 15px;
+      border: none;
+      color: #696969;
+      height: 40px;
+  }
+  }
+
+  @media (max-width: 1025px) {
+    .inner-box p {
+      font-family: Roboto;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 21px;
+      letter-spacing: 0em;
+      text-align: left;
+      color: #0057AC;
+    }
+    .para-4 {
+      font-family: Roboto;
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 16px;
+      letter-spacing: 0em;
+      text-align: left;
+      color: #696969;
+      padding-bottom: 10px;
+    }
+    .sop-compliance .para-5 {
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 26px;
+      letter-spacing: 0em;
+      text-align: center;
+      color: #ffffff;
+    }
+    .btn {
+      width: 100%;
+      position: relative;
+      height: 50px;
+      background-color: #BF3030;
+      font-family: Roboto;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 19px;
+      letter-spacing: 0em;
+      text-align: left;
+      border-radius: 15px;
+      border: none;
+      height: 40px;
+    }
+
+    .btn-1 {
+      width: 100%;
+      position: relative;
+      height: 50px;
+      background-color: #30BF6C;
+      font-family: Roboto;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 19px;
+      letter-spacing: 0em;
+      text-align: left;
+      border-radius: 15px;
+      border: none;
+      color: #fff;
+      height: 40px;
+    }
+    .btn-2 {
+      width: 100%;
+      position: relative;
+      height: 50px;
+      background-color: #F5F5F5;
+      font-family: Roboto;
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 19px;
+      letter-spacing: 0em;
+      text-align: left;
+      border-radius: 15px;
+      border: none;
+      color: #696969;
+      height: 40px;
+  }
+  }
+
+
+ 
+  
+  
+  
+   </style>
+   
+</head>
+
+<body data-spy="scroll" data-target="#myScrollspy">
+    
+    <section class="about-section bg-color" id="about">
+        <div class="container-fluid">
+            <div class="row five-sec pt-3 ps-4 pe-4">
+                <div class="col-2">
+                  <div class="p-3">
+                    
+                    <img src="/static/asset/Frame 44.png" width="70%" />
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="bord-box">
+                    <div class="para-4 filter-title">Part Number</div>
+                    <select name="part_number" id="part_number">
+                      {% for key, value in drop_down.items() %}
+                        <option value="{{key}}">{{key}}</option>
+                      {% endfor %}
+                    </select>
+                    <div class="d-flex filter-icon">
+                      <img src="/static/asset/arrow_forward_ios.svg" />
+                    </div>
+                     
+                  </div>
+                </div>
+
+                <div class="col-2">
+                    <div class="bord-box">
+                            <div class="para-4 filter-title">Variety</div>
+                            <select name="variety" id="variety">
+                            </select>
+                            <div class="d-flex filter-icon">
+                              <img src="/static/asset/arrow_forward_ios.svg" />
+                            </div>
+                             
+                    </div>
+                </div>
+
+                <div class="col-2">
+                  <div class="bord-box">
+                    <div class="para-4 filter-title">Application</div>
+                    <select name="application" id="application">
+                    </select>
+                    <div class="d-flex filter-icon">
+                      <img src="/static/asset/arrow_forward_ios.svg" />
+                    </div>
+                     
+                  </div>
+                </div>
+
+                <div class="col-2">
+                  <div class="bord-box">
+                    <div class="para-4 filter-title">Planned Cycle Time</div>
+                    <select name="cycle_time" id="cycle_time">
+                    </select>
+                    <div class="d-flex filter-icon">
+                      <img src="/static/asset/arrow_forward_ios.svg" />
+                    </div>
+                     
+                  </div>
+                </div>
+
+                
+               
+                
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section bg-color" id="about">
+        <div class="container-fluid">
+            <div class="row three-sec ps-4 pe-4">
+                
+                <div class="col-2 first">
+                    <div class="bord" id="refresh-section">
+                        <div class="sop-compliance">
+                            <p class="para-5">SOP Compliance</p>
+                        </div>
+                        <div class="p-1">
+
+                            <div class="object-container-wrapper">
+                            {% for class_id, class_name in class_name_dict.items() %}
+                              <button class="btn{% if class_name in detected_objects %}-1{% else %}{% endif %} btn-primary mt-3">
+                                <img src="/static/asset/{% if class_name in detected_objects %}check_circle.svg {% else %}cancel.svg {% endif %}" 
+
+                                class="cancel pe-3 ps-2" />
+
+                            {{ class_name }}
+                            </button>
+                            {% endfor %}
+                            </div>
+
+                           <!--  <button class="btn-1 btn-primary mt-3"><img src="/static/asset/check_circle.svg" class="cancel pe-3 ps-2" />Gromet Placement RHS</button>
+                            <button class="btn-1 btn-primary mt-3"><img src="/static/asset/check_circle.svg" class="cancel pe-3 ps-2" />Spindle Screw - Driver</button>
+                            <button class="btn-1 btn-primary mt-3"><img src="/static/asset/check_circle.svg" class="cancel pe-3 ps-2" />Spindle Screw - Passenger</button> -->
+                           <!--  <button class="btn-2 btn-primary mt-3 ps-3">Go Gauge RHS</button>
+                            <button class="btn-2 btn-primary mt-2 ps-3">No Gauge RHS</button>
+                            <button class="btn-2 btn-primary mt-2 ps-3">Go Gauge LHS</button>
+                            <button class="btn-2 btn-primary mt-2 ps-3">No Gauge RHS</button> -->
+
+                            {% if detected_objects|length > 4 %}
+                            <div class="pass">
+                                <p>Result</p>
+                                <h3>PASS</h3>
+                            </div>
+
+                             {% else %}
+                            <div class="fail">
+                                <p>Result</p>
+                                <h3>FAIL</h3>
+                            </div>
+                            {% endif %}
+
+
+                            <input type="text" id="check_pass_fail" name="check_pass_fail" value="{% if detected_objects|length > 4 %}1{% else %}0{% endif %}"  hidden/>
+
+                            <!-- <div>
+                              {% if detected_objects|length > 4 %}
+                                <p class="pass">Pass</p>
+                              {% else %}
+                                <p class="fail">Fail</p>
+                              {% endif %}
+                            </div> -->
+                             
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-8 second">
+                    <div class="bord">
+                        <div class="">  
+                            <!-- <img src="asset/loco.png" width="100%" style="border-radius: 10px;" /> -->
+                            <img src="{{ url_for('webapp') }}" width="100%" style="border-radius: 10px;" alt="Upload video">
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="col-2 first">
+                    <div class="bord">
+                        <div class="sop-compliance">
+                            <p class="para-5">Date/Time/Activity Clock</p>
+                        </div>
+                        <div class="p-3">
+                            <div class="time-sec">
+                                <p class="time" id="stopwatch">
+                                    00:00:00
+                                  </p>
+                                  <p class="time-1">
+                                    hr:min:sec
+                                  </p>
+                            </div>
+
+                            <div class="d-flex trading mt-3">
+                                <div class="total">
+                                    <p>Total Count</p>
+                                    <h3 id="total_count">{{ total_count }}</h3>
+                                </div>
+                                <div class="total-imag">
+                                    <img src="/static/asset/trending_down.svg" class="trad-imag" />
+                                </div>
+                            </div>
+
+                            <div class="d-flex trading mt-3">
+                                <div class="total">
+                                    <p style="color: #00963F;">Pass Count</p>
+                                    <h3 id="pass_count">{{ pass_count }}</h3>
+                                </div>
+                                <div class="total-imag">
+                                    <img src="/static/asset/trending_down.svg" class="trad-imag" />
+                                </div>
+                            </div>
+
+                            <div class="d-flex trading mt-3">
+                                <div class="total">
+                                    <p style="color: #BF3030;">SOP Violation</p>
+                                    <h3 id="sop_violation">{{ sop_violation }}</h3>
+                                </div>
+                                <div class="total-imag">
+                                    <img src="/static/asset/trending_up.svg" class="trad-imag" />
+                                </div>
+                            </div>
+
+                            <button id="reset">RESET</button>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                
+               
+                
+            </div>
+        </div>
+    </section>
+    
+    <section class="about-section bg-color" id="about">
+        <div class="container-fluid">
+            <div class="row three-sec ps-4 pe-4">
+                
+                <div class="col-4">
+                    <div class="bord-1">
+                        <div class="sop-compliance mt-2">
+                            <p class="para-5">Production Count</p>
+                        </div>
+                        <div class="bar-char">
+                          <canvas id="myChart" style="width:100%;max-width:400px; margin: auto; height: 135px!important; margin-top: 20px; margin-bottom: 20px;"></canvas>   
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="bord-1">
+                        <div class="sop-compliance mt-2">
+                            <p class="para-5">Cycle Time Analysis</p>
+                        </div>
+
+                        <canvas id="myChart1" style="width:100%;max-width:400px; margin: auto; height: 135px!important; margin-top: 20px; margin-bottom: 20px;"></canvas>
+                        
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="bord-1">
+                        <div class="sop-compliance mt-2">
+                            <p class="para-5">Cycle Time</p>
+                        </div>
+
+                        <div class="cycle mt-4">
+                          <h3 id="actual_cycle_time"></h3>
+                          <p>Actual Cycle Time</p>
+                        </div>
+
+                        <div class="cycle-1 mt-2">
+                          <h3 id="avg_time">0</h3>
+                          <p>Avg Time</p>
+                        </div>
+
+                        <div class="cycle mt-2">
+                          <h3 id="achieved_today">0</h3>
+                          <p >Achieved today</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+
+
+<script>
+  function refreshSection2() {
+    fetch('/section3_data_endpoint')  // Updated endpoint URL
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('refresh-section').innerHTML = data;  // Updated element ID
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+    fetch('/fromdevicecheck')  // Updated endpoint URL
+      .then(response => response.text())
+      .then(data => {
+        if(data == 1){
+          updatedata();
+        }  
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+  }
+  setInterval(refreshSection2, 2000);
+
+
+
+
+
+</script>
+
+
+<script>
+
+  var production_count_x = ["8AM", "9AM", "10AM", "11AM", "12AM", "1PM", "2PM", "3PM", "4PM", "5PM"];
+  production_count_y = [];
+  var cycle_analysis_x = ["PROD1", "PROD2", "PROD3", "PROD4", "PROD5", "PROD6", "PROD7", "PROD8", "PROD9", "PROD10"];
+  var yValues = [25, 20, 15, 25, 15, 20, 10, 0];
+  var barColors = ["#30BF6C", "#30BF6C","#30BF6C","#30BF6C","#30BF6C", "#30BF6C", "#30BF6C","#30BF6C", "#30BF6C","#30BF6C","#30BF6C","#30BF6C", "#30BF6C", "#30BF6C","#30BF6C", "#30BF6C","#30BF6C","#30BF6C","#30BF6C", "#30BF6C", "#30BF6C","#30BF6C", "#30BF6C", "#30BF6C"];
+  var barColorss = ["#FF900A", "#FF900A","#FF900A","#FF900A","#FF900A", "#FF900A", "#FF900A", "#FF900A", "#FF900A", "#FF900A"];
+  
+  var production_count_chart = new Chart("myChart", {
+    type: "bar",
+    data: {
+      labels: production_count_x,
+      datasets: [{
+        backgroundColor: barColors,
+        data: production_count_y,
+        borderRadius: 20,
+      }]
+    },
+    options: {
+      legend: {display: false},
+      title: {
+        display: false,
+        text: "World Wine Production 2018"
+      },
+      scales: {
+      xAxes: [{
+        display: true,
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          labelString: ''
+        }
+      }],
+      yAxes: [{
+        display: true,
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Count'
+        }
+      }]
+    }
+    }
+  });
+
+  var cycle_analysis_chart = new Chart("myChart1", {
+    type: "bar",
+    data: {
+      labels: cycle_analysis_x,
+      datasets: [{
+        backgroundColor: barColorss,
+        data: cycle_analysis_y
+      }]
+    },
+    
+    options: {
+      legend: {display: false},
+      title: {
+        display: false,
+        text: "World Wine Production 2018"
+      },
+      scales: {
+      xAxes: [{
+        display: true,
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          labelString: ''
+        }
+      }],
+      yAxes: [{
+        display: true,
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Duration (Minutes)'
+        }
+      }]
+    }
+      
+    }
+  });
+
+
+      function updatedata(){
+      var check_pass_fail = $("#check_pass_fail").val();
+      var stopwatch = $("#stopwatch").html();
+
+
+      $.get("/completed?load=false&check_pass_fail="+check_pass_fail+"&stopwatch="+stopwatch, function(data, status){
+      $("#sop_violation").html(data['sop_violation'])
+      $("#total_count").html(data['total_count'])
+      $("#pass_count").html(data['pass_count'])
+
+      // production_count_chart.data.labels = (Object.keys(data['production_count_hours']));
+      production_count_chart.data.datasets[0].data = Object.values(data['production_count_hours']);
+      cycle_analysis_chart.data.datasets[0].data = Object.values(data['cycle_time_analysis']);
+
+      $('#achieved_today').html(data['achieved_today'])
+
+      var a = data['achieved_today'].split(':'); // split it at the colons
+
+      // Hours are worth 60 minutes.
+      var minutes = (+a[0]) * 60 + (+a[1]);
+
+      $('#avg_time').html((minutes/80).toFixed(2))
+
+      production_count_chart.update();
+      cycle_analysis_chart.update();
+
+      resetStopwatch();
+      startStopwatch();
+
+        // alert("Data: " + data + "\nStatus: " + status);
+      });
+    }
+
+
+
+  $( document ).ready(function() {
+
+    $.get("/completed?load=true", function(data, status){
+
+
+      $("#sop_violation").html(data['sop_violation'])
+      $("#total_count").html(data['total_count'])
+      $("#pass_count").html(data['pass_count'])
+
+      // production_count_chart.data.labels = (Object.keys(data['production_count_hours']));
+      production_count_chart.data.datasets[0].data = Object.values(data['production_count_hours']);
+      cycle_analysis_chart.data.datasets[0].data = Object.values(data['cycle_time_analysis']);
+
+      $('#achieved_today').html(data['achieved_today'])
+
+      var a = data['achieved_today'].split(':'); // split it at the colons
+
+      // Hours are worth 60 minutes.
+      var minutes = (+a[0]) * 60 + (+a[1]);
+
+      $('#avg_time').html((minutes/80).toFixed(2))
+
+      production_count_chart.update();
+      cycle_analysis_chart.update();
+
+      resetStopwatch();
+      startStopwatch();
+
+        // alert("Data: " + data + "\nStatus: " + status);
+
+    });
+
+    startStopwatch();
+
+
+
+
+    $("#reset").click(function(){
+
+
+
+            $.get("/reset", function(data, status){
+      $("#sop_violation").html(data['sop_violation'])
+      $("#total_count").html(data['total_count'])
+      $("#pass_count").html(data['pass_count'])
+
+      // production_count_chart.data.labels = (Object.keys(data['production_count_hours']));
+      production_count_chart.data.datasets[0].data = Object.values(data['production_count_hours']);
+      cycle_analysis_chart.data.datasets[0].data = Object.values(data['cycle_time_analysis']);
+
+      $('#achieved_today').html(data['achieved_today'])
+
+      var a = data['achieved_today'].split(':'); // split it at the colons
+
+      // Hours are worth 60 minutes.
+      var minutes = (+a[0]) * 60 + (+a[1]);
+
+      $('#avg_time').html((minutes/80).toFixed(2))
+
+      production_count_chart.update();
+      cycle_analysis_chart.update();
+
+      resetStopwatch();
+      startStopwatch();
+
+        // alert("Data: " + data + "\nStatus: " + status);
+      });
+
+    });
+
+
+    $( "#part_number" ).on( "change", function() {
+
+      console.log(drop_down[$('#part_number :selected').text()][0]);
+
+      $('#variety').html($('<option>', {
+    value: drop_down[$('#part_number :selected').text()][0],
+    text: drop_down[$('#part_number :selected').text()][0],
+    selected:'selected'
+    }));
+
+      $('#application').html($('<option>', {
+    value: drop_down[$('#part_number :selected').text()][1],
+    text: drop_down[$('#part_number :selected').text()][1],
+    selected:'selected'
+    }));
+
+            $('#cycle_time').html($('<option>', {
+    value: drop_down[$('#part_number :selected').text()][2],
+    text: drop_down[$('#part_number :selected').text()][2],
+    selected:'selected'
+    }));
+
+            $("#actual_cycle_time").html(drop_down[$('#part_number :selected').text()][2])
+
+
+      $.get("/selected_part_number?part_number="+drop_down[$('#part_number :selected').text()][0], function(data, status){
+
+          console.log(data)
+
+        } );
+
+
+} );
+
+    
+});
+
+
+
+  </script>
+
+</html>

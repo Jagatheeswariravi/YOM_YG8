@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"> <!-- Add your stylesheet link here -->
+    <title>Object Detection</title>
+</head>
+<body>
+    <h2><strong>Standard Operating Procedure</strong></h2>
+    <div class="object-container-wrapper">
+        {% for class_id, class_name in class_name_dict.items() %}
+            <div class="object-container{% if class_name in detected_objects %} detected{% endif %}">
+                <button class="object-button">{{ class_name }}</button>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2><strong>Status</strong></h2>
+    {% if detected_objects|length > 4 %}
+        <p class="pass">Pass</p>
+    {% else %}
+        <p class="fail">Fail</p>
+    {% endif %}
+</body>
+</html>
+
+
+
+
